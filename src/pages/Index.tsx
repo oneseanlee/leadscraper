@@ -1,7 +1,9 @@
-import Landing from "./Landing";
-
 const Index = () => {
-    return <Landing />;
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <h1 className="text-2xl font-bold text-foreground">Welcome to WebHunt</h1>
+    </div>
+  );
 };
 
 export default Index;
