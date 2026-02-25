@@ -8,7 +8,6 @@ import {
     Search,
     Settings,
     Crosshair,
-    Bell,
     HelpCircle,
     Map,
     Terminal,
@@ -16,8 +15,7 @@ import {
     Bot,
     Mic2,
     Film,
-    AppWindow,
-    LogOut
+    AppWindow
 } from 'lucide-react'
 
 const AuthenticatedLayout: React.FC = () => {
