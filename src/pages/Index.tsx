@@ -1,9 +1,7 @@
+import Landing from "./Landing";
+
 const Index = () => {
-  return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <h1 className="text-2xl font-bold text-foreground">Welcome</h1>
-    </div>
-  );
+    return <Landing />;
 };
 
 export default Index;
