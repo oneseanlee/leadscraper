@@ -63,7 +63,7 @@ const NotificationDropdown: React.FC = () => {
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) return []
 
-            const { data, error } = await supabase
+            const { data, error } = await (supabase as any)
                 .from('notifications')
                 .select('*')
                 .eq('user_id', user.id)
@@ -81,7 +81,7 @@ const NotificationDropdown: React.FC = () => {
     const markAsRead = useMutation({
         mutationFn: async (id: string) => {
             if (!isSupabaseConfigured) return
-            await supabase.from('notifications').update({ is_read: true }).eq('id', id)
+            await (supabase as any).from('notifications').update({ is_read: true }).eq('id', id)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['notifications'] })
@@ -93,7 +93,7 @@ const NotificationDropdown: React.FC = () => {
             if (!isSupabaseConfigured) return
             const { data: { user } } = await supabase.auth.getUser()
             if (!user) return
-            await supabase.from('notifications').update({ is_read: true }).eq('user_id', user.id).eq('is_read', false)
+            await (supabase as any).from('notifications').update({ is_read: true }).eq('user_id', user.id).eq('is_read', false)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['notifications'] })
@@ -103,7 +103,7 @@ const NotificationDropdown: React.FC = () => {
     const deleteNotification = useMutation({
         mutationFn: async (id: string) => {
             if (!isSupabaseConfigured) return
-            await supabase.from('notifications').delete().eq('id', id)
+            await (supabase as any).from('notifications').delete().eq('id', id)
         },
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['notifications'] })
