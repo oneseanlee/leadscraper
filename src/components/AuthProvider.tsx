@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState } from 'react'
-import { supabase, isSupabaseConfigured } from '@/lib/supabase'
+import React, { createContext, useContext, useEffect, useState } from 'react'
+import { supabase } from '@/lib/supabase'
 import type { User, Session } from '@supabase/supabase-js'
 
 interface AuthContextType {
@@ -17,9 +17,29 @@ const AuthContext = createContext<AuthContextType>({
 })
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    const [user] = useState<User | null>(null)
-    const [session] = useState<Session | null>(null)
-    const [loading] = useState(false)
+    const [user, setUser] = useState<User | null>(null)
+    const [session, setSession] = useState<Session | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        // Get initial session
+        supabase.auth.getSession().then(({ data: { session: s } }) => {
+            setSession(s)
+            setUser(s?.user ?? null)
+            setLoading(false)
+        })
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange(
+            (_event, s) => {
+                setSession(s)
+                setUser(s?.user ?? null)
+                setLoading(false)
+            }
+        )
+
+        return () => subscription.unsubscribe()
+    }, [])
 
     const signOut = async () => { await supabase.auth.signOut() }
 
