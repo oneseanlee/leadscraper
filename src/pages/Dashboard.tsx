@@ -24,6 +24,16 @@ interface SearchRecord {
     created_at: string
 }
 
+function mapSearch(row: any): SearchRecord {
+    return {
+        id: row.id,
+        niche: row.business_type ?? row.niche,
+        location: row.location,
+        status: row.status,
+        created_at: row.created_at,
+    }
+}
+
 const MOCK_SEARCHES: SearchRecord[] = [
     { id: '1', niche: 'BrightBridge - Website Design', location: 'Design a framer website with modern templates', status: 'completed', created_at: '2026-02-25T10:30:00Z' },
     { id: '2', niche: 'Github - Upload Dev Files', location: 'Collaborate with Developers to handle SaaS Project', status: 'completed', created_at: '2026-02-24T14:15:00Z' },
@@ -40,7 +50,7 @@ const Dashboard: React.FC = () => {
             if (!isSupabaseConfigured) return MOCK_SEARCHES
             const { data, error } = await supabase.from('searches').select('*').order('created_at', { ascending: false })
             if (error) throw error
-            return data as SearchRecord[]
+            return (data as any[]).map(mapSearch)
         }
     })
 
